@@ -88,7 +88,7 @@
       text-decoration: none;
     }
     .nav-logo span { color: var(--accent); }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
     .nav-links a {
       color: var(--muted);
       text-decoration: none;
@@ -106,6 +106,30 @@
       transition: opacity 0.2s !important;
     }
     .nav-cta:hover { opacity: 0.85; }
+
+    /* ── Language toggle ── */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 6px 11px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      font-family: var(--font);
+    }
+    .lang-btn:hover { color: var(--text); }
+    .lang-btn.active { background: var(--accent); color: #000; }
 
     /* ── Hero ── */
     #hero {
@@ -187,7 +211,6 @@
       padding-top: 48px;
       border-top: 1px solid var(--border);
     }
-    .stat-item { }
     .stat-number {
       font-size: 2.4rem;
       font-weight: 900;
@@ -199,7 +222,6 @@
     .stat-label { font-size: 0.85rem; color: var(--muted); }
 
     /* ── Services ── */
-    #services .section-header { margin-bottom: 56px; }
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -216,19 +238,11 @@
       border-color: rgba(0,212,255,0.35);
       transform: translateY(-4px);
     }
-    .service-icon {
-      font-size: 2rem;
-      margin-bottom: 16px;
-    }
-    .service-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+    .service-icon { font-size: 2rem; margin-bottom: 16px; }
+    .service-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
     .service-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
 
     /* ── Results ── */
-    #results .section-header { margin-bottom: 56px; }
     .results-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -312,10 +326,7 @@
     .highlight-body  { font-size: 0.85rem; color: var(--muted); }
 
     /* ── CTA ── */
-    #contact {
-      background: var(--bg);
-      text-align: center;
-    }
+    #contact { background: var(--bg); text-align: center; }
     .cta-box {
       background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
       border: 1px solid rgba(0,212,255,0.18);
@@ -367,87 +378,137 @@
 <body>
 
 <!-- ============================================================
-     SITE CONFIG — change these values to rebrand the entire page
+     SITE CONFIG — non-translatable data
      ============================================================ -->
 <script>
-  const SITE = {
-    name:        "YourBrand",          // ← company / brand name
-    nameAccent:  ".",                  // ← decorative suffix shown in accent color (e.g. "." or " AI")
-    tagline:     "AI & Automation Consulting",
-    hero: {
-      title:     "Build Smarter Systems, Faster.",
-      sub:       "I help businesses integrate AI, automate complex workflows, and architect scalable platforms — so your team ships results, not just code.",
-      cta1:      { label: "Book a Free Discovery Call", href: "#contact" },
-      cta2:      { label: "See What I Do",              href: "#services" },
-    },
-    stats: [
-      { number: "8+",    label: "Years of engineering experience" },
-      { number: "30+",   label: "Engineers led across 4 industries" },
-      { number: "3×",    label: "Faster reconciliation at eFishery" },
-      { number: "7×",    label: "Faster onboarding at Xendit" },
-    ],
-    services: [
-      {
-        icon: "🤖",
-        title: "AI Integration",
-        desc:  "Connect LLMs, chatbots, and AI agents into your product or internal workflows. From prompt engineering to production deployment.",
-      },
-      {
-        icon: "⚡",
-        title: "Process Automation",
-        desc:  "Replace manual, error-prone processes with automated pipelines — reconciliation, onboarding, reporting, and more.",
-      },
-      {
-        icon: "🏗️",
-        title: "System Architecture",
-        desc:  "Design scalable microservices, cloud infrastructure, and data pipelines on AWS or GCP that grow with your business.",
-      },
-      {
-        icon: "👔",
-        title: "Fractional CTO / Engineering Lead",
-        desc:  "Embedded leadership for startups and scale-ups that need senior engineering guidance without a full-time hire.",
-      },
-    ],
-    results: [
-      {
-        metric: "3 days → 24 hrs",
-        desc:    "Rebuilt the payment reconciliation pipeline at eFishery, cutting cycle time by over 85%.",
-        company: "eFishery",
-      },
-      {
-        metric: "7 days → 24 hrs",
-        desc:    "Re-architected the merchant onboarding flow at Xendit, accelerating time-to-live for new users.",
-        company: "Xendit",
-      },
-      {
-        metric: "10s → < 1s",
-        desc:    "Eliminated dashboard latency for a government regulatory compliance system at Hukumonline.",
-        company: "Hukumonline",
-      },
-    ],
-    industries: [
-      "Payment & Fintech", "Legal Tech", "Agri-business", "F&B",
-      "E-commerce", "Government / RegTech",
-    ],
-    about: {
-      bio: [
-        "I'm Alfi Fadel Majid — a Principal Engineer and Senior Engineering Manager with 8+ years building and leading high-performing engineering teams across Southeast Asia and Singapore.",
-        "My edge is sitting at the intersection of strategic thinking and hands-on execution. I don't just advise — I design, build, and ship alongside your team.",
-      ],
-      highlights: [
-        { title: "Deep AI & Automation Experience",   body: "Chat platform integrations, automated reconciliation, onboarding, and compliance systems." },
-        { title: "Cloud-native by Default",            body: "AWS & GCP infrastructure, microservices, and scalable data pipelines are my home turf." },
-        { title: "Leadership at Every Level",          body: "Managed teams of 10+ engineers, ran cross-functional projects, and mentored dozens of engineers." },
-      ],
-      skills: ["Go", "Node.js", "TypeScript", "Next.js", "PostgreSQL", "MySQL", "Redis", "AWS", "GCP", "Microservices", "RabbitMQ", "Docker", "Agile / Scrum"],
-    },
+  var SITE = {
+    name:       "Fadel Majid",
+    nameAccent: ".",
     contact: {
       email:    "fadelmajid@gmail.com",
-      linkedin: "https://linkedin.com/in/fadelmajid",   // ← update if different
+      linkedin: "https://linkedin.com/in/fadelmajid",
       twitter:  "https://twitter.com/fadelmajid",
       whatsapp: "https://wa.me/6285786007245",
     },
-    footer: "All rights reserved.",
+    skills: ["Go", "Node.js", "TypeScript", "Next.js", "PostgreSQL", "MySQL", "Redis", "AWS", "GCP", "Microservices", "RabbitMQ", "Docker", "Agile / Scrum"],
+  };
+
+  var LANG = {
+    en: {
+      tagline:   "AI & Automation Consulting",
+      pageTitle: "AI & Automation Consulting",
+      nav: { services: "Services", results: "Results", about: "About", cta: "Let's Talk" },
+      hero: {
+        title:         "Build Smarter Systems, Faster.",
+        highlightWord: "Smarter",
+        sub:           "I help businesses integrate AI, automate complex workflows, and architect scalable platforms — so your team ships results, not just code.",
+        cta1: { label: "Book a Free Discovery Call", href: "#contact" },
+        cta2: { label: "See What I Do",              href: "#services" },
+      },
+      stats: [
+        { number: "8+",  label: "Years of engineering experience" },
+        { number: "30+", label: "Engineers led across 4 industries" },
+        { number: "3\u00D7",  label: "Faster reconciliation at eFishery" },
+        { number: "7\u00D7",  label: "Faster onboarding at Xendit" },
+      ],
+      services: {
+        tag: "What I Offer", title: "Services",
+        sub: "Practical, results-focused engagements \u2014 from strategy to working software.",
+        items: [
+          { icon: "\uD83E\uDD16", title: "AI Integration",                    desc: "Connect LLMs, chatbots, and AI agents into your product or internal workflows. From prompt engineering to production deployment." },
+          { icon: "\u26A1",      title: "Process Automation",               desc: "Replace manual, error-prone processes with automated pipelines \u2014 reconciliation, onboarding, reporting, and more." },
+          { icon: "\uD83C\uDFD7\uFE0F", title: "System Architecture",       desc: "Design scalable microservices, cloud infrastructure, and data pipelines on AWS or GCP that grow with your business." },
+          { icon: "\uD83D\uDC54", title: "Fractional CTO / Engineering Lead", desc: "Embedded leadership for startups and scale-ups that need senior engineering guidance without a full-time hire." },
+        ],
+      },
+      results: {
+        tag: "Proven Track Record", title: "Real Results",
+        sub: "Numbers that show up in production, not just slide decks.",
+        industriesLabel: "Industries served",
+        items: [
+          { metric: "3 days \u2192 24 hrs", desc: "Rebuilt the payment reconciliation pipeline at eFishery, cutting cycle time by over 85%.",                 company: "eFishery" },
+          { metric: "7 days \u2192 24 hrs", desc: "Re-architected the merchant onboarding flow at Xendit, accelerating time-to-live for new users.",          company: "Xendit" },
+          { metric: "10s \u2192 < 1s",      desc: "Eliminated dashboard latency for a government regulatory compliance system at Hukumonline.",               company: "Hukumonline" },
+        ],
+        industries: ["Payment & Fintech", "Legal Tech", "Agri-business", "F&B", "E-commerce", "Government / RegTech"],
+      },
+      about: {
+        tag: "About", title: "Who's Behind This",
+        bio: [
+          "I\u2019m Alfi Fadel Majid \u2014 a Principal Engineer and Senior Engineering Manager with 8+ years building and leading high-performing engineering teams across Southeast Asia and Singapore.",
+          "My edge is sitting at the intersection of strategic thinking and hands-on execution. I don\u2019t just advise \u2014 I design, build, and ship alongside your team.",
+        ],
+        highlights: [
+          { title: "Deep AI & Automation Experience",  body: "Chat platform integrations, automated reconciliation, onboarding, and compliance systems." },
+          { title: "Cloud-native by Default",           body: "AWS & GCP infrastructure, microservices, and scalable data pipelines are my home turf." },
+          { title: "Leadership at Every Level",         body: "Managed teams of 10+ engineers, ran cross-functional projects, and mentored dozens of engineers." },
+        ],
+      },
+      contact: {
+        tag: "Get In Touch", title: "Ready to move fast?",
+        sub: "Let\u2019s talk about your problem. First call is free \u2014 no commitment, no fluff.",
+        ctaBtn: "Book a Free Call (WhatsApp)",
+      },
+      footer: "All rights reserved.",
+    },
+
+    id: {
+      tagline:   "Konsultasi AI & Otomasi",
+      pageTitle: "Konsultasi AI & Otomasi",
+      nav: { services: "Layanan", results: "Hasil", about: "Tentang", cta: "Ngobrol Yuk" },
+      hero: {
+        title:         "Bangun Sistem Lebih Cerdas, Lebih Cepat.",
+        highlightWord: "Cerdas",
+        sub:           "Saya membantu bisnis mengintegrasikan AI, mengotomasi alur kerja kompleks, dan merancang platform yang skalabel \u2014 agar tim Anda menghasilkan dampak nyata, bukan sekadar kode.",
+        cta1: { label: "Jadwalkan Konsultasi Gratis", href: "#contact" },
+        cta2: { label: "Lihat Layanan Saya",          href: "#services" },
+      },
+      stats: [
+        { number: "8+",  label: "Tahun pengalaman engineering" },
+        { number: "30+", label: "Engineer yang dipimpin di 4 industri" },
+        { number: "3\u00D7",  label: "Rekonsiliasi lebih cepat di eFishery" },
+        { number: "7\u00D7",  label: "Onboarding lebih cepat di Xendit" },
+      ],
+      services: {
+        tag: "Yang Saya Tawarkan", title: "Layanan",
+        sub: "Keterlibatan praktis berorientasi hasil \u2014 dari strategi hingga perangkat lunak yang berfungsi.",
+        items: [
+          { icon: "\uD83E\uDD16", title: "Integrasi AI",                         desc: "Integrasikan LLM, chatbot, dan AI agent ke dalam produk atau alur kerja internal Anda. Dari rekayasa prompt hingga deployment produksi." },
+          { icon: "\u26A1",      title: "Otomasi Proses",                      desc: "Gantikan proses manual yang rawan error dengan pipeline otomatis \u2014 rekonsiliasi, onboarding, pelaporan, dan lainnya." },
+          { icon: "\uD83C\uDFD7\uFE0F", title: "Arsitektur Sistem",            desc: "Rancang microservices, infrastruktur cloud, dan data pipeline yang skalabel di AWS atau GCP sesuai pertumbuhan bisnis Anda." },
+          { icon: "\uD83D\uDC54", title: "CTO / Engineering Lead Paruh Waktu", desc: "Kepemimpinan tertanam untuk startup dan scale-up yang butuh panduan engineering senior tanpa rekrutmen penuh waktu." },
+        ],
+      },
+      results: {
+        tag: "Rekam Jejak Terbukti", title: "Hasil Nyata",
+        sub: "Angka yang muncul di produksi, bukan hanya di slide presentasi.",
+        industriesLabel: "Industri yang dilayani",
+        items: [
+          { metric: "3 hari \u2192 24 jam", desc: "Membangun ulang pipeline rekonsiliasi pembayaran di eFishery, memangkas waktu siklus hingga lebih dari 85%.",   company: "eFishery" },
+          { metric: "7 hari \u2192 24 jam", desc: "Merancang ulang alur onboarding merchant di Xendit, mempercepat waktu aktif untuk pengguna baru.",               company: "Xendit" },
+          { metric: "10d \u2192 < 1d",      desc: "Menghilangkan latensi dashboard pada sistem kepatuhan regulasi pemerintah di Hukumonline.",                      company: "Hukumonline" },
+        ],
+        industries: ["Pembayaran & Fintech", "Legal Tech", "Agribisnis", "F&B", "E-commerce", "Pemerintah / RegTech"],
+      },
+      about: {
+        tag: "Tentang", title: "Siapa di Balik Ini",
+        bio: [
+          "Saya Alfi Fadel Majid \u2014 Principal Engineer dan Senior Engineering Manager dengan 8+ tahun pengalaman membangun dan memimpin tim engineering berkinerja tinggi di Asia Tenggara dan Singapura.",
+          "Keunggulan saya ada di persimpangan antara pemikiran strategis dan eksekusi langsung. Saya tidak hanya memberi saran \u2014 saya merancang, membangun, dan men-ship bersama tim Anda.",
+        ],
+        highlights: [
+          { title: "Pengalaman AI & Otomasi yang Mendalam", body: "Integrasi platform chat, rekonsiliasi otomatis, onboarding, dan sistem kepatuhan." },
+          { title: "Cloud-native Secara Default",            body: "Infrastruktur AWS & GCP, microservices, dan data pipeline yang skalabel adalah bidang saya." },
+          { title: "Kepemimpinan di Setiap Level",           body: "Mengelola tim 10+ engineer, menjalankan proyek lintas fungsi, dan menjadi mentor bagi puluhan engineer." },
+        ],
+      },
+      contact: {
+        tag: "Hubungi Saya", title: "Siap Bergerak Cepat?",
+        sub: "Mari diskusikan masalah Anda. Konsultasi pertama gratis \u2014 tanpa komitmen, tanpa basa-basi.",
+        ctaBtn: "Jadwalkan Konsultasi Gratis (WhatsApp)",
+      },
+      footer: "Hak cipta dilindungi.",
+    },
   };
 </script>
 
@@ -456,10 +517,16 @@
   <div class="container nav-inner">
     <a href="#" class="nav-logo" id="nav-logo-el"></a>
     <ul class="nav-links">
-      <li><a href="#services">Services</a></li>
-      <li><a href="#results">Results</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+      <li><a href="#services" id="nav-services"></a></li>
+      <li><a href="#results"  id="nav-results"></a></li>
+      <li><a href="#about"    id="nav-about"></a></li>
+      <li><a href="#contact"  class="nav-cta" id="nav-cta"></a></li>
+      <li>
+        <div class="lang-toggle">
+          <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="btn-id" onclick="setLang('id')">ID</button>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>
@@ -478,11 +545,7 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="container">
-    <div class="section-header">
-      <span class="tag">What I Offer</span>
-      <h2 class="section-title">Services</h2>
-      <p class="section-sub">Practical, results-focused engagements — from strategy to working software.</p>
-    </div>
+    <div class="section-header" id="services-header" style="margin-bottom:56px"></div>
     <div class="services-grid" id="services-grid"></div>
   </div>
 </section>
@@ -490,11 +553,7 @@
 <!-- RESULTS -->
 <section id="results">
   <div class="container">
-    <div class="section-header">
-      <span class="tag">Proven Track Record</span>
-      <h2 class="section-title">Real Results</h2>
-      <p class="section-sub">Numbers that show up in production, not just slide decks.</p>
-    </div>
+    <div class="section-header" id="results-header" style="margin-bottom:56px"></div>
     <div class="results-grid" id="results-grid"></div>
     <div class="industries-row" id="industries-row"></div>
   </div>
@@ -505,8 +564,8 @@
   <div class="container">
     <div class="about-grid">
       <div class="about-text">
-        <span class="tag">About</span>
-        <h2 class="section-title" id="about-title">Who's Behind This</h2>
+        <span class="tag" id="about-tag"></span>
+        <h2 class="section-title" id="about-title"></h2>
         <div id="about-bio"></div>
         <div class="skills-list" id="skills-list"></div>
       </div>
@@ -519,9 +578,9 @@
 <section id="contact">
   <div class="container">
     <div class="cta-box">
-      <span class="tag">Get In Touch</span>
-      <h2 class="section-title">Ready to move fast?</h2>
-      <p class="section-sub">Let's talk about your problem. First call is free — no commitment, no fluff.</p>
+      <span class="tag" id="contact-tag"></span>
+      <h2 class="section-title" id="contact-title"></h2>
+      <p class="section-sub" id="contact-sub"></p>
       <div id="cta-actions"></div>
       <div class="contact-links" id="contact-links"></div>
     </div>
@@ -536,95 +595,103 @@
 </footer>
 
 <!-- ============================================================
-     RENDER — reads SITE config and populates the DOM
+     RENDER
      ============================================================ -->
 <script>
-  (function () {
-    const S = SITE;
-    const year = new Date().getFullYear();
+  var currentLang = 'en';
 
-    // Page meta
-    document.getElementById("page-title").textContent = S.name + " — " + S.tagline;
-    document.getElementById("meta-desc").setAttribute("content",
-      S.hero.sub);
+  function setLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-id').classList.toggle('active', lang === 'id');
+    render(LANG[lang]);
+    try { localStorage.setItem('lang', lang); } catch(e) {}
+  }
 
-    // Nav logo
-    document.getElementById("nav-logo-el").innerHTML =
-      S.name + '<span>' + S.nameAccent + '</span>';
+  function render(L) {
+    var S = SITE;
+    var year = new Date().getFullYear();
 
-    // Hero
-    document.getElementById("hero-tag").textContent  = S.tagline;
-    document.getElementById("hero-title").innerHTML  =
-      S.hero.title.replace("Smarter", '<span class="highlight">Smarter</span>');
-    document.getElementById("hero-sub").textContent  = S.hero.sub;
-    document.getElementById("hero-actions").innerHTML =
-      `<a href="${S.hero.cta1.href}" class="btn-primary">→ ${S.hero.cta1.label}</a>
-       <a href="${S.hero.cta2.href}" class="btn-secondary">${S.hero.cta2.label}</a>`;
+    document.getElementById('page-title').textContent = S.name + ' \u2014 ' + L.pageTitle;
+    document.getElementById('meta-desc').setAttribute('content', L.hero.sub);
 
-    // Stats
-    document.getElementById("stats-row").innerHTML = S.stats.map(s =>
-      `<div class="stat-item">
-         <div class="stat-number">${s.number}</div>
-         <div class="stat-label">${s.label}</div>
-       </div>`
-    ).join("");
+    document.getElementById('nav-logo-el').innerHTML = S.name + '<span>' + S.nameAccent + '</span>';
+    document.getElementById('nav-services').textContent = L.nav.services;
+    document.getElementById('nav-results').textContent  = L.nav.results;
+    document.getElementById('nav-about').textContent    = L.nav.about;
+    document.getElementById('nav-cta').textContent      = L.nav.cta;
 
-    // Services
-    document.getElementById("services-grid").innerHTML = S.services.map(s =>
-      `<div class="service-card">
-         <div class="service-icon">${s.icon}</div>
-         <div class="service-title">${s.title}</div>
-         <div class="service-desc">${s.desc}</div>
-       </div>`
-    ).join("");
+    document.getElementById('hero-tag').textContent = L.tagline;
+    document.getElementById('hero-title').innerHTML =
+      L.hero.title.replace(L.hero.highlightWord, '<span class="highlight">' + L.hero.highlightWord + '</span>');
+    document.getElementById('hero-sub').textContent = L.hero.sub;
+    document.getElementById('hero-actions').innerHTML =
+      '<a href="' + L.hero.cta1.href + '" class="btn-primary">\u2192 ' + L.hero.cta1.label + '</a> ' +
+      '<a href="' + L.hero.cta2.href + '" class="btn-secondary">' + L.hero.cta2.label + '</a>';
 
-    // Results
-    document.getElementById("results-grid").innerHTML = S.results.map(r =>
-      `<div class="result-card">
-         <div class="result-metric">${r.metric}</div>
-         <div class="result-desc">${r.desc}</div>
-         <div class="result-company">${r.company}</div>
-       </div>`
-    ).join("");
+    document.getElementById('stats-row').innerHTML = L.stats.map(function(s) {
+      return '<div class="stat-item"><div class="stat-number">' + s.number + '</div><div class="stat-label">' + s.label + '</div></div>';
+    }).join('');
 
-    // Industries
-    document.getElementById("industries-row").innerHTML =
-      '<div style="width:100%;margin-bottom:8px;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">Industries served</div>' +
-      S.industries.map(i => `<span class="industry-pill">${i}</span>`).join("");
+    document.getElementById('services-header').innerHTML =
+      '<span class="tag">' + L.services.tag + '</span>' +
+      '<h2 class="section-title">' + L.services.title + '</h2>' +
+      '<p class="section-sub">' + L.services.sub + '</p>';
 
-    // About bio
-    document.getElementById("about-bio").innerHTML = S.about.bio.map(p =>
-      `<p>${p}</p>`
-    ).join("");
+    document.getElementById('services-grid').innerHTML = L.services.items.map(function(s) {
+      return '<div class="service-card"><div class="service-icon">' + s.icon + '</div>' +
+             '<div class="service-title">' + s.title + '</div>' +
+             '<div class="service-desc">' + s.desc + '</div></div>';
+    }).join('');
 
-    // Skills
-    document.getElementById("skills-list").innerHTML = S.about.skills.map(sk =>
-      `<span class="skill-chip">${sk}</span>`
-    ).join("");
+    document.getElementById('results-header').innerHTML =
+      '<span class="tag">' + L.results.tag + '</span>' +
+      '<h2 class="section-title">' + L.results.title + '</h2>' +
+      '<p class="section-sub">' + L.results.sub + '</p>';
 
-    // About highlights
-    document.getElementById("about-highlights").innerHTML = S.about.highlights.map(h =>
-      `<div class="highlight-item">
-         <div class="highlight-title">${h.title}</div>
-         <div class="highlight-body">${h.body}</div>
-       </div>`
-    ).join("");
+    document.getElementById('results-grid').innerHTML = L.results.items.map(function(r) {
+      return '<div class="result-card"><div class="result-metric">' + r.metric + '</div>' +
+             '<div class="result-desc">' + r.desc + '</div>' +
+             '<div class="result-company">' + r.company + '</div></div>';
+    }).join('');
 
-    // CTA actions
-    document.getElementById("cta-actions").innerHTML =
-      `<a href="${S.contact.whatsapp}" class="btn-primary" target="_blank" rel="noopener">
-         → Book a Free Call (WhatsApp)
-       </a>`;
+    document.getElementById('industries-row').innerHTML =
+      '<div style="width:100%;margin-bottom:8px;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">' + L.results.industriesLabel + '</div>' +
+      L.results.industries.map(function(i) { return '<span class="industry-pill">' + i + '</span>'; }).join('');
 
-    // Contact links
-    document.getElementById("contact-links").innerHTML =
-      `<a href="mailto:${S.contact.email}" class="contact-link">✉ ${S.contact.email}</a>
-       <a href="${S.contact.linkedin}" class="contact-link" target="_blank" rel="noopener">in LinkedIn</a>
-       <a href="${S.contact.twitter}"  class="contact-link" target="_blank" rel="noopener">𝕏 Twitter</a>`;
+    document.getElementById('about-tag').textContent   = L.about.tag;
+    document.getElementById('about-title').textContent = L.about.title;
+    document.getElementById('about-bio').innerHTML = L.about.bio.map(function(p) { return '<p>' + p + '</p>'; }).join('');
 
-    // Footer
-    document.getElementById("footer-text").innerHTML =
-      `© ${year} <span>${S.name}</span>. ${S.footer}`;
+    document.getElementById('skills-list').innerHTML = S.skills.map(function(sk) {
+      return '<span class="skill-chip">' + sk + '</span>';
+    }).join('');
+
+    document.getElementById('about-highlights').innerHTML = L.about.highlights.map(function(h) {
+      return '<div class="highlight-item"><div class="highlight-title">' + h.title + '</div>' +
+             '<div class="highlight-body">' + h.body + '</div></div>';
+    }).join('');
+
+    document.getElementById('contact-tag').textContent   = L.contact.tag;
+    document.getElementById('contact-title').textContent = L.contact.title;
+    document.getElementById('contact-sub').textContent   = L.contact.sub;
+    document.getElementById('cta-actions').innerHTML =
+      '<a href="' + S.contact.whatsapp + '" class="btn-primary" target="_blank" rel="noopener">\u2192 ' + L.contact.ctaBtn + '</a>';
+    document.getElementById('contact-links').innerHTML =
+      '<a href="mailto:' + S.contact.email + '" class="contact-link">\u2709 ' + S.contact.email + '</a>' +
+      '<a href="' + S.contact.linkedin + '" class="contact-link" target="_blank" rel="noopener">in LinkedIn</a>' +
+      '<a href="' + S.contact.twitter  + '" class="contact-link" target="_blank" rel="noopener">\uD835\uDD4F Twitter</a>';
+
+    document.getElementById('footer-text').innerHTML =
+      '\u00A9 ' + year + ' <span>' + S.name + '</span>. ' + L.footer;
+  }
+
+  // Init — restore saved language preference or default to 'en'
+  (function() {
+    var saved = 'en';
+    try { saved = localStorage.getItem('lang') || 'en'; } catch(e) {}
+    setLang(saved);
   })();
 </script>
 

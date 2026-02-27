@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">Loading...</title>
+  <meta name="description" id="meta-desc" content="" />
+  <style>
+    /* =========================================================
+       BRAND CONFIG — edit variables here to restyle quickly
+       ========================================================= */
+    :root {
+      --accent:   #00d4ff;
+      --accent2:  #7c3aed;
+      --bg:       #0a0a0f;
+      --bg2:      #111118;
+      --bg3:      #1a1a24;
+      --text:     #e8e8f0;
+      --muted:    #8888a8;
+      --border:   rgba(255,255,255,0.08);
+      --radius:   12px;
+      --font:     'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Utilities ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    .accent    { color: var(--accent); }
+    .tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.25);
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 560px;
+    }
+    section { padding: 96px 0; }
+    section:nth-child(even) { background: var(--bg2); }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: rgba(10,10,15,0.82);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent);
+      color: #000 !important;
+      font-weight: 700 !important;
+      padding: 8px 20px;
+      border-radius: 8px;
+      transition: opacity 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ── Hero ── */
+    #hero {
+      padding: 160px 0 100px;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 900px; height: 700px;
+      background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-eyebrow { margin-bottom: 24px; }
+    .hero-title {
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 780px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--bg3);
+      border-color: rgba(255,255,255,0.18);
+    }
+
+    /* ── Stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-top: 72px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-item { }
+    .stat-number {
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── Services ── */
+    #services .section-header { margin-bottom: 56px; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .service-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+    .service-card:hover {
+      border-color: rgba(0,212,255,0.35);
+      transform: translateY(-4px);
+    }
+    .service-icon {
+      font-size: 2rem;
+      margin-bottom: 16px;
+    }
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .service-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── Results ── */
+    #results .section-header { margin-bottom: 56px; }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+    .result-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .result-metric {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+    }
+    .result-desc { font-size: 0.92rem; color: var(--muted); }
+    .result-company {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-top: auto;
+    }
+
+    /* ── Industries ── */
+    .industries-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 48px;
+    }
+    .industry-pill {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* ── About ── */
+    #about { background: var(--bg2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 16px; line-height: 1.75; }
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+    .skill-chip {
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.18);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+    .about-highlights { display: flex; flex-direction: column; gap: 20px; }
+    .highlight-item {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+    }
+    .highlight-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; }
+    .highlight-body  { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── CTA ── */
+    #contact {
+      background: var(--bg);
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
+      border: 1px solid rgba(0,212,255,0.18);
+      border-radius: 20px;
+      padding: 72px 48px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .cta-box .section-title { margin-bottom: 14px; }
+    .cta-box .section-sub   { margin: 0 auto 36px; }
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 32px;
+    }
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 28px 0;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    footer span { color: var(--text); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .cta-box { padding: 48px 24px; }
+      section { padding: 72px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     SITE CONFIG — change these values to rebrand the entire page
+     ============================================================ -->
+<script>
+  const SITE = {
+    name:        "YourBrand",          // ← company / brand name
+    nameAccent:  ".",                  // ← decorative suffix shown in accent color (e.g. "." or " AI")
+    tagline:     "AI & Automation Consulting",
+    hero: {
+      title:     "Build Smarter Systems, Faster.",
+      sub:       "I help businesses integrate AI, automate complex workflows, and architect scalable platforms — so your team ships results, not just code.",
+      cta1:      { label: "Book a Free Discovery Call", href: "#contact" },
+      cta2:      { label: "See What I Do",              href: "#services" },
+    },
+    stats: [
+      { number: "8+",    label: "Years of engineering experience" },
+      { number: "30+",   label: "Engineers led across 4 industries" },
+      { number: "3×",    label: "Faster reconciliation at eFishery" },
+      { number: "7×",    label: "Faster onboarding at Xendit" },
+    ],
+    services: [
+      {
+        icon: "🤖",
+        title: "AI Integration",
+        desc:  "Connect LLMs, chatbots, and AI agents into your product or internal workflows. From prompt engineering to production deployment.",
+      },
+      {
+        icon: "⚡",
+        title: "Process Automation",
+        desc:  "Replace manual, error-prone processes with automated pipelines — reconciliation, onboarding, reporting, and more.",
+      },
+      {
+        icon: "🏗️",
+        title: "System Architecture",
+        desc:  "Design scalable microservices, cloud infrastructure, and data pipelines on AWS or GCP that grow with your business.",
+      },
+      {
+        icon: "👔",
+        title: "Fractional CTO / Engineering Lead",
+        desc:  "Embedded leadership for startups and scale-ups that need senior engineering guidance without a full-time hire.",
+      },
+    ],
+    results: [
+      {
+        metric: "3 days → 24 hrs",
+        desc:    "Rebuilt the payment reconciliation pipeline at eFishery, cutting cycle time by over 85%.",
+        company: "eFishery",
+      },
+      {
+        metric: "7 days → 24 hrs",
+        desc:    "Re-architected the merchant onboarding flow at Xendit, accelerating time-to-live for new users.",
+        company: "Xendit",
+      },
+      {
+        metric: "10s → < 1s",
+        desc:    "Eliminated dashboard latency for a government regulatory compliance system at Hukumonline.",
+        company: "Hukumonline",
+      },
+    ],
+    industries: [
+      "Payment & Fintech", "Legal Tech", "Agri-business", "F&B",
+      "E-commerce", "Government / RegTech",
+    ],
+    about: {
+      bio: [
+        "I'm Alfi Fadel Majid — a Principal Engineer and Senior Engineering Manager with 8+ years building and leading high-performing engineering teams across Southeast Asia and Singapore.",
+        "My edge is sitting at the intersection of strategic thinking and hands-on execution. I don't just advise — I design, build, and ship alongside your team.",
+      ],
+      highlights: [
+        { title: "Deep AI & Automation Experience",   body: "Chat platform integrations, automated reconciliation, onboarding, and compliance systems." },
+        { title: "Cloud-native by Default",            body: "AWS & GCP infrastructure, microservices, and scalable data pipelines are my home turf." },
+        { title: "Leadership at Every Level",          body: "Managed teams of 10+ engineers, ran cross-functional projects, and mentored dozens of engineers." },
+      ],
+      skills: ["Go", "Node.js", "TypeScript", "Next.js", "PostgreSQL", "MySQL", "Redis", "AWS", "GCP", "Microservices", "RabbitMQ", "Docker", "Agile / Scrum"],
+    },
+    contact: {
+      email:    "fadelmajid@gmail.com",
+      linkedin: "https://linkedin.com/in/fadelmajid",   // ← update if different
+      twitter:  "https://twitter.com/fadelmajid",
+      whatsapp: "https://wa.me/6285786007245",
+    },
+    footer: "All rights reserved.",
+  };
+</script>
+
+<!-- NAV -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo" id="nav-logo-el"></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-eyebrow"><span class="tag" id="hero-tag"></span></div>
+    <h1 class="hero-title" id="hero-title"></h1>
+    <p class="hero-sub" id="hero-sub"></p>
+    <div class="hero-actions" id="hero-actions"></div>
+    <div class="stats-row" id="stats-row"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">What I Offer</span>
+      <h2 class="section-title">Services</h2>
+      <p class="section-sub">Practical, results-focused engagements — from strategy to working software.</p>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="container">
+    <div class="section-header">
+      <span class="tag">Proven Track Record</span>
+      <h2 class="section-title">Real Results</h2>
+      <p class="section-sub">Numbers that show up in production, not just slide decks.</p>
+    </div>
+    <div class="results-grid" id="results-grid"></div>
+    <div class="industries-row" id="industries-row"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="tag">About</span>
+        <h2 class="section-title" id="about-title">Who's Behind This</h2>
+        <div id="about-bio"></div>
+        <div class="skills-list" id="skills-list"></div>
+      </div>
+      <div class="about-highlights" id="about-highlights"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / CTA -->
+<section id="contact">
+  <div class="container">
+    <div class="cta-box">
+      <span class="tag">Get In Touch</span>
+      <h2 class="section-title">Ready to move fast?</h2>
+      <p class="section-sub">Let's talk about your problem. First call is free — no commitment, no fluff.</p>
+      <div id="cta-actions"></div>
+      <div class="contact-links" id="contact-links"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p id="footer-text"></p>
+  </div>
+</footer>
+
+<!-- ============================================================
+     RENDER — reads SITE config and populates the DOM
+     ============================================================ -->
+<script>
+  (function () {
+    const S = SITE;
+    const year = new Date().getFullYear();
+
+    // Page meta
+    document.getElementById("page-title").textContent = S.name + " — " + S.tagline;
+    document.getElementById("meta-desc").setAttribute("content",
+      S.hero.sub);
+
+    // Nav logo
+    document.getElementById("nav-logo-el").innerHTML =
+      S.name + '<span>' + S.nameAccent + '</span>';
+
+    // Hero
+    document.getElementById("hero-tag").textContent  = S.tagline;
+    document.getElementById("hero-title").innerHTML  =
+      S.hero.title.replace("Smarter", '<span class="highlight">Smarter</span>');
+    document.getElementById("hero-sub").textContent  = S.hero.sub;
+    document.getElementById("hero-actions").innerHTML =
+      `<a href="${S.hero.cta1.href}" class="btn-primary">→ ${S.hero.cta1.label}</a>
+       <a href="${S.hero.cta2.href}" class="btn-secondary">${S.hero.cta2.label}</a>`;
+
+    // Stats
+    document.getElementById("stats-row").innerHTML = S.stats.map(s =>
+      `<div class="stat-item">
+         <div class="stat-number">${s.number}</div>
+         <div class="stat-label">${s.label}</div>
+       </div>`
+    ).join("");
+
+    // Services
+    document.getElementById("services-grid").innerHTML = S.services.map(s =>
+      `<div class="service-card">
+         <div class="service-icon">${s.icon}</div>
+         <div class="service-title">${s.title}</div>
+         <div class="service-desc">${s.desc}</div>
+       </div>`
+    ).join("");
+
+    // Results
+    document.getElementById("results-grid").innerHTML = S.results.map(r =>
+      `<div class="result-card">
+         <div class="result-metric">${r.metric}</div>
+         <div class="result-desc">${r.desc}</div>
+         <div class="result-company">${r.company}</div>
+       </div>`
+    ).join("");
+
+    // Industries
+    document.getElementById("industries-row").innerHTML =
+      '<div style="width:100%;margin-bottom:8px;font-size:0.78rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted)">Industries served</div>' +
+      S.industries.map(i => `<span class="industry-pill">${i}</span>`).join("");
+
+    // About bio
+    document.getElementById("about-bio").innerHTML = S.about.bio.map(p =>
+      `<p>${p}</p>`
+    ).join("");
+
+    // Skills
+    document.getElementById("skills-list").innerHTML = S.about.skills.map(sk =>
+      `<span class="skill-chip">${sk}</span>`
+    ).join("");
+
+    // About highlights
+    document.getElementById("about-highlights").innerHTML = S.about.highlights.map(h =>
+      `<div class="highlight-item">
+         <div class="highlight-title">${h.title}</div>
+         <div class="highlight-body">${h.body}</div>
+       </div>`
+    ).join("");
+
+    // CTA actions
+    document.getElementById("cta-actions").innerHTML =
+      `<a href="${S.contact.whatsapp}" class="btn-primary" target="_blank" rel="noopener">
+         → Book a Free Call (WhatsApp)
+       </a>`;
+
+    // Contact links
+    document.getElementById("contact-links").innerHTML =
+      `<a href="mailto:${S.contact.email}" class="contact-link">✉ ${S.contact.email}</a>
+       <a href="${S.contact.linkedin}" class="contact-link" target="_blank" rel="noopener">in LinkedIn</a>
+       <a href="${S.contact.twitter}"  class="contact-link" target="_blank" rel="noopener">𝕏 Twitter</a>`;
+
+    // Footer
+    document.getElementById("footer-text").innerHTML =
+      `© ${year} <span>${S.name}</span>. ${S.footer}`;
+  })();
+</script>
+
+</body>
+</html>
